@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<!-- Inherit Todo Task Form View -->
+		<record id="view_form_todo_task_inherited" model="ir.ui.view">
+			<field name="name">Todo Task - form User extension</field>
+			<field name="model">todo.task</field>
+			<!-- inherit dari view parent ditunjukkan oleh atribut ref -->
+			<field name="inherit_id" ref="ipin_todo_app.view_form_todo_task"/>
+			<!-- Modification inherited start here -->
+			<field name="arch" type="xml">
+				<!-- menambah dan memposisikan field "user_id" setelah field "name/description" --> 
+				<field name="name" position="after">
+					<field name="user_id" />
+				</field>
+				<!-- menambah dan memposisikan field "date_deadline" sebelum field "is_done" -->
+				<field name="is_done" position="before">
+					<field name="date_deadline" />
+				</field>
+				<!-- mengganti atribut string field "name/description" -->
+				<field name="name" position="attributes">
+					<attribute name="string">I have to...</attribute>
+				</field>
+			</field>
+		</record>
+		
+		<!-- Inherit Todo Task Filter View -->
+		<record id="view_filter_todo_task_inherited" model="ir.ui.view">
+			<field name="name">Todo Task tree - User extension</field>
+			<field name="model">todo.task</field>
+			<field name="inherit_id" ref="ipin_todo_app.view_filter_todo_task"/>
+			<field name="arch" type="xml">
+				<!-- menambah dan memposisikan field "user_id" setelah field "name/description" -->
+				<field name="name" position="after">
+					<field name="user_id" />
+					<!-- filter dengan domain responsible user login yg bersangkutan -->
+					<filter name="filter_my_tasks" string="My Tasks"
+						domain="[('user_id','in',[uid,False])]" />
+					<!-- filter dengan domain responsible user kosong atau tidak diisi -->	
+					<filter name="filter_not_assigned" string="Not Assigned"
+						domain="[('user_id','=',False)]" />
+				</field>
+			</field>
+		</record>
+		
+	</data>
+</openerp>
